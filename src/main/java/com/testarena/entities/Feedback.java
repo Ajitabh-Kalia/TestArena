@@ -1,38 +1,27 @@
 package com.testarena.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
-
-import java.util.Date;
-import java.util.Map;
+import lombok.*;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Feedback {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
-    @ManyToOne
-    @Column(name = "user_id")
-    private  User user;
+    private String comments;
 
-    @ManyToOne
-    @Column(name = "test_id")
-    private  Test test;
+    private int rating;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "test_id")
+    private Test test;
 
-    @OneToOne(mappedBy = "feedback")
-    private AttemptedTest attemptedTest;
-
-
-    @Column(columnDefinition = "json")
-    private String response;
-
-    private Date attemptedDate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }
